@@ -31,7 +31,7 @@ String slicing in python using indices works on UTF-8 but you need to know when 
 * ```print("y̆y"[:1]=="y") # true```
 * ```print("y̆y"[:2]=="y̆") # true```
 
-Using Rust byte slicing ```"mystring[0..4]``` of the strings needed to be replaced with functions that operate on "graphemes" - multi-byte sequences making up a single "character". This functionality is provided by the [unicode-segmentation](https://crates.io/crates/unicode-segmentation) crate.
+Using Rust byte slicing ```"mystring[0..4]``` of the strings needed to be replaced with functions that operate on "graphemes" - multi-byte sequences making up a single character. This functionality is provided by the [unicode-segmentation](https://crates.io/crates/unicode-segmentation) crate.
 
 Those functions are included. It also has the benefit of further improving readability:
 * ```left(str:&str,end:usize) -> String```
