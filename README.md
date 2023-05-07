@@ -24,7 +24,7 @@ The algorithm is interesting: loop thru each word comparing reversed prefixes to
 Use of the Hashset makes searching for word matches in the dictionary very fast and is also useful for weeding out duplicate phrases in the results when the root word is a palindrome (it produces the same phrase twice otherwise.)
 
 ## Extra Credit
-The python project assumes ASCII characters only in the dictionary text. The rust version here processes UTF-8 strings in general. There is some slight overhead in this compared to the python version - which pretty makes the run times equivalent or ~0.5 seconds. However, using the same assumption in the rust version using slices - rust is about twice as fast.
+The python project assumes ASCII characters only in the dictionary text. The Rust version here processes UTF-8 strings in general. There is some slight overhead in this compared to the python version - which pretty makes the run times equivalent or ~0.5 seconds. However, using the same assumption in the Rust version using slices - Rust is about twice as fast.
 
 String slicing in python using indices works on UTF-8 but you need to know when a character takes more than 1 byte:
 * ```print("y̆y"[:1]=="y̆") # false```
