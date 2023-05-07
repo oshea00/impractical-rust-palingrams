@@ -24,12 +24,12 @@ By comparison, the python version from the book takes 2-3 times longer to run. S
 The algorithm is interesting loop thru each root word comparing reversed prefixes to dictionary. If match is found and rest of the root word after matching reversed suffix is a palindrome, then you've found a phrase.
 Repeat search of root word from the other end looking for matching reversed suffix and a palindromic prefix.
 
-Use of the Hashset makes searching for word matches in te dictionary very fast. and is also useful for weeding out duplicate phrases in the results when root word is a palindrome it produces the same phrase twice.
+Use of the Hashset makes searching for word matches in the dictionary very fast and is also useful for weeding out duplicate phrases in the results when the root word is a palindrome (it produces the same phrase twice.)
 
 ## Extra Credit
-The python project assumed ASCII text. The rust version here basically ignores UTF-8 strings that have a different character count than byte length to avoid having to deal with words like 'fiancé'. 
+The python project assumes ASCII text. The rust version here basically ignores UTF-8 strings that have a different character count than byte length to avoid having to deal with words like 'fiancé'. 
 
-Using slicing of the strings would need to be replaced with a "substring" function that is aware of "graphemes" or characters that span multiple bytes.
+Using slicing of the strings would need to be replaced with a "substring" function that is aware of "graphemes" or characters that span multiple bytes, in addition to "reversing" such character sequences.
 
 
 
