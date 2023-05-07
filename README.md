@@ -8,37 +8,36 @@ This example is for the "Finding Palingrams" project.
 * Using HashSet to speed up membership checks
 * Writing a file of the results
 * Using std::time::Instant to time the calculation
-* String slicing
+* String handling of UTF-8 strings containing grapheme cluster characters (see Extra Credit below) 
 
 ## Using
 From the project root directory:
 ```
 > cargo build --release
 > ./target/release/palingram[.exe]
-Time elapsed is: 127.0983ms
+Time elapsed is: 222.0983ms
 ```
 Produces file pairs.txt containing the palingrams found in search of the dictionary.txt containing 74K words.
 
-By comparison, the python version from the book takes 2-3 times longer to run. Still under a second.
+The algorithm is interesting: loop thru each word comparing reversed prefixes to dictionary. If reversed prefix match is found and the rest of the root word following the matching prefix is a palindrome, then you've found a palingram phrase. Repeating search of root word from the other end looking for matching reversed suffix and a palindromic prefix completes the full search.
 
-The algorithm is interesting loop thru each root word comparing reversed prefixes to dictionary. If match is found and rest of the root word after matching reversed suffix is a palindrome, then you've found a phrase.
-Repeat search of root word from the other end looking for matching reversed suffix and a palindromic prefix.
-
-Use of the Hashset makes searching for word matches in the dictionary very fast and is also useful for weeding out duplicate phrases in the results when the root word is a palindrome (it produces the same phrase twice.)
+Use of the Hashset makes searching for word matches in the dictionary very fast and is also useful for weeding out duplicate phrases in the results when the root word is a palindrome (it produces the same phrase twice otherwise.)
 
 ## Extra Credit
-The python project assumes ASCII text. The rust version here basically ignores UTF-8 strings that have a different character count than byte length to avoid having to deal with words like 'fiancé'. 
+The python project assumes ASCII characters only in the dictionary text. The rust version here processes UTF-8 strings in general. There is some slight overhead in this compared to the python version - which pretty makes the run times equivalent or ~0.5 seconds. However, using the same assumption in the rust version using slices - rust is about twice as fast.
 
-Using slicing of the strings would need to be replaced with a "substring" function that is aware of "graphemes" or characters that span multiple bytes, in addition to "reversing" such character sequences.
+String slicing in python using indices works on UTF-8 but you need to know when a character takes more than 1 byte:
+* ```print("y̆y"[:1]=="y̆") # false```
+* ```print("y̆y"[:1]=="y") # true```
+* ```print("y̆y"[:2]=="y̆") # true```
 
+Using Rust byte slicing ```"mystring[0..4]``` of the strings needed to be replaced with functions that operate on "graphemes" - multi-byte sequences making up a single "character". This functionality is provided by the [unicode-segmentation](https://crates.io/crates/unicode-segmentation) crate.
 
-
-
-
-
-
-
-
+Those functions are included. It also has the benefit of further improving readability:
+* ```left(str:&str,end:usize) -> String```
+* ```right(str:&str,start:usize) -> String```
+* ```reverse(str:&str) -> String```
+* ```substring(str:&str,start:usize,end:usize) -> String```
 
 
 

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+use unicode_segmentation::UnicodeSegmentation;
 use std::collections::HashSet;
 use std::fs::{self, File};
 use std::io::Write;
@@ -10,22 +12,21 @@ fn main() {
     let dictionary: HashSet<String> = contents.lines().map(|s| s.to_string()).collect();
     let mut palingrams = HashSet::new();
     for rootword in &dictionary {
-        // Sidestepping utf_8 strings with multi-byte chars in the dictionary
-        if rootword.len() > 1 && (rootword.chars().count() == rootword.len()) {
+        if rootword.chars().count() > 1 {
             // left to right
-            for i in 1..rootword.len() + 1 {
-                let reversed = rootword[..i].chars().rev().collect::<String>();
+            for i in 1..rootword.chars().count() + 1 {
+                let reversed = reverse(&left(rootword, i));
                 if dictionary.contains(&reversed) {
-                    if is_palindrome(&rootword[i..]) {
+                    if is_palindrome(&right(rootword, i)) {
                         palingrams.insert(format!("{} {}\n", rootword, reversed));
                     }
                 }
             }
             // right to left
-            for i in (0..rootword.len()).rev() {
-                let reversed = rootword[i..].chars().rev().collect::<String>();
+            for i in (0..rootword.chars().count()).rev() {
+                let reversed = reverse(&right(rootword, i));
                 if dictionary.contains(&reversed) {
-                    if is_palindrome(&rootword[..i]) {
+                    if is_palindrome(&left(rootword, i)) {
                         palingrams.insert(format!("{} {}\n", reversed, rootword));
                     }
                 }
@@ -49,6 +50,25 @@ fn is_palindrome(phrase: &str) -> bool {
     phrase == reversed
 }
 
+fn substring(str: &str, start: usize, end: usize) -> String {
+    str.graphemes(true)
+        .skip(start)
+        .take(end - start)
+        .collect::<String>()
+}
+
+fn right(str: &str, start: usize) -> String {
+    str.graphemes(true).skip(start).collect::<String>()
+}
+
+fn left(str: &str, end: usize) -> String {
+    str.graphemes(true).take(end).collect::<String>()
+}
+
+fn reverse(str: &str) -> String {
+    str.graphemes(true).rev().collect::<String>()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -56,5 +76,25 @@ mod tests {
     #[test]
     fn is_palindrome_true() {
         assert!(is_palindrome("ere"));
+    }
+
+    #[test]
+    fn can_left() {
+        assert_eq!("fiancé", left("fiancé", 6));
+    }
+
+    #[test]
+    fn can_right() {
+        assert_eq!("", right("fiancé", 6));
+    }
+    #[test]
+
+    fn can_substring() {
+        assert_eq!("y̆", substring("fiancy̆", 5, 6));
+    }
+
+    #[test]
+    fn can_reverse() {
+        assert_eq!("fiancé", reverse("écnaif"));
     }
 }
