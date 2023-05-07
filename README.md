@@ -2,7 +2,7 @@
 
 I thought it would be fun and useful to practice Rust programming by implementing programs in Rust from the book *Impractical Python Projects* by Lee Vaughn.
 
-This example is for the "Finding Palingrams" project.
+This example is for the "Finding Palingrams Spells" project.
 
 ## Featuring
 * Using HashSet to speed up membership checks
