@@ -8,7 +8,7 @@ use std::time::Instant;
 fn main() {
     let start = Instant::now();
     let contents =
-        fs::read_to_string("dictionary.txt").expect("Something went wrong reading the file");
+        fs::read_to_string("dictionary.txt").expect("dictionary.txt s/b in current directory.");
     let dictionary: HashSet<String> = contents.lines().map(|s| s.to_string()).collect();
     let mut palingrams = HashSet::new();
     for rootword in &dictionary {
@@ -39,9 +39,9 @@ fn main() {
 }
 
 fn write_pairs(pairs: HashSet<String>) {
-    let mut file = File::create("pairs.txt").expect("Couldn't create file");
+    let mut file = File::create("pairs.txt").expect("pairs.txt created.");
     for pair in pairs {
-        file.write(pair.as_bytes()).expect("Couldn't write file");
+        file.write(pair.as_bytes()).expect("pairs.txt is saved.");
     }
 }
 
